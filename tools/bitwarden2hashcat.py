@@ -136,10 +136,6 @@ def process_file(filename, legacy = False):
         traceback.print_exc()
         print("Missing values, user is probably logged out.", file=sys.stderr)
         return
-    except:
-        traceback.print_exc()
-        return
-
     iterations2 = 1 if legacy else 2
     for entry in data:
         if len(entry) != 3:

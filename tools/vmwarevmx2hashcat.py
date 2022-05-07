@@ -29,7 +29,7 @@ def parse_keysafe(file):
         with open(file, 'r') as data:
             lines = data.readlines()
     except (OSError, IOError):
-        sys.exit('[-] Cannot read from file ' + data)
+        sys.exit(f'[-] Cannot read from file {data}')
 
     for line in lines:
         if 'encryption.keySafe' in line:
@@ -44,19 +44,19 @@ def parse_keysafe(file):
 
     vmx_ks = ks_struct
 
-    vmx_ks['password_hash'] = match.group(2)
+    vmx_ks['password_hash'] = match[2]
     if vmx_ks['password_hash'] != 'PBKDF2-HMAC-SHA-1':
         msg = 'Unsupported password hash format: ' + vmx_ks['password_hash']
         raise ValueError(msg)
 
-    vmx_ks['password_cipher'] = match.group(3)
+    vmx_ks['password_cipher'] = match[3]
     if vmx_ks['password_cipher'] != 'AES-256':
         msg = 'Unsupported cypher format: ' + vmx_ks['password_cypher']
         raise ValueError(msg)
 
-    vmx_ks['hash_round'] = int(match.group(4))
-    vmx_ks['salt'] = base64.b64decode(unquote(match.group(5)))
-    vmx_ks['dict'] = base64.b64decode(match.group(7))[0:32]
+    vmx_ks['hash_round'] = int(match[4])
+    vmx_ks['salt'] = base64.b64decode(unquote(match[5]))
+    vmx_ks['dict'] = base64.b64decode(match[7])[:32]
 
     return vmx_ks
 
