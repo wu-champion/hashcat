@@ -29,7 +29,7 @@ with open(sys.argv[1],'rb') as fd:
     seedBuffer = fd.read()
 
 #Basic check
-if not seedBuffer[0:4].decode("utf8").startswith("SECO"):
+if not seedBuffer[:4].decode("utf8").startswith("SECO"):
     print("Not A SECO exodus header magic")
     sys.exit(1)
 
@@ -66,4 +66,13 @@ iv = seedBuffer[0x14c:0x158]
 authTag = seedBuffer[0x158:0x168]
 key = seedBuffer[0x168:0x188]
 
-print("EXODUS:"+str(n)+":"+str(r)+":"+str(p)+":"+base64.b64encode(salt).decode("utf8")+":"+base64.b64encode(iv).decode("utf8")+":"+base64.b64encode(key).decode("utf8")+":"+base64.b64encode(authTag).decode("utf8"))
+print(
+    f"EXODUS:{str(n)}:{str(r)}:{str(p)}:"
+    + base64.b64encode(salt).decode("utf8")
+    + ":"
+    + base64.b64encode(iv).decode("utf8")
+    + ":"
+    + base64.b64encode(key).decode("utf8")
+    + ":"
+    + base64.b64encode(authTag).decode("utf8")
+)
